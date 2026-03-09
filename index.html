@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+  <title>Erin_xyal · 独立开发者</title>
+  <meta name="description" content="Erin_xyal 的个人作品集主页 — 独立开发者 · 产品设计师。热爱将东方哲学与现代技术融合，探索星辰与代码之间的奥秘。" />
+  <meta name="keywords" content="Erin_xyal,独立开发者,产品设计师,咖喱占星,吠陀占星" />
+  <meta name="author" content="Erin_xyal" />
+  <meta property="og:title" content="Erin_xyal · 独立开发者" />
+  <meta property="og:description" content="探索星辰与代码之间的奥秘" />
+  <meta property="og:type" content="website" />
+  <meta name="theme-color" content="#0a0a0f" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&family=Noto+Serif+SC:wght@400;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body {
+      height: 100%;
+      width: 100%;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+      font-family: "Noto Sans SC", -apple-system, BlinkMacSystemFont, sans-serif;
+      background: #0a0a0f;
+      color: #fff;
+    }
+
+    /* ===== Animations ===== */
+    @keyframes twinkle {
+      0%, 100% { opacity: 0.1; transform: scale(1); }
+      50% { opacity: 0.85; transform: scale(1.5); }
+    }
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(20px) scale(0.96); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    @keyframes bounceIn {
+      0% { transform: scale(0.3); opacity: 0; }
+      50% { transform: scale(1.05); }
+      70% { transform: scale(0.95); }
+      100% { transform: scale(1); opacity: 1; }
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-6px); }
+    }
+
+    /* ===== Desktop ===== */
+    .desktop {
+      position: relative;
+      min-height: 100vh;
+      width: 100%;
+      overflow: hidden;
+      background:
+        radial-gradient(ellipse at 20% 50%, rgba(40,20,60,0.8) 0%, transparent 60%),
+        radial-gradient(ellipse at 80% 20%, rgba(20,40,80,0.7) 0%, transparent 55%),
+        radial-gradient(ellipse at 60% 80%, rgba(60,20,40,0.5) 0%, transparent 50%),
+        linear-gradient(135deg, #0a0a0f 0%, #0f0f1a 30%, #0d0a14 60%, #0a0d0f 100%);
+    }
+
+    /* ===== Stars ===== */
+    .stars {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      pointer-events: none;
+      z-index: 0;
+    }
+    .star {
+      position: absolute;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.7);
+    }
+
+    /* ===== MenuBar ===== */
+    .menubar {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 16px;
+      z-index: 100;
+      background: rgba(0,0,0,0.55);
+      backdrop-filter: blur(20px) saturate(180%);
+      -webkit-backdrop-filter: blur(20px) saturate(180%);
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      user-select: none;
+    }
+    .menubar-left { display: flex; align-items: center; gap: 16px; }
+    .menubar-name {
+      color: #fff;
+      font-weight: 600;
+      font-size: 12px;
+      cursor: pointer;
+      padding: 2px 8px;
+      border-radius: 4px;
+      transition: background 0.15s;
+    }
+    .menubar-name:hover { background: rgba(255,255,255,0.1); }
+    .menubar-title {
+      color: rgba(255,255,255,0.4);
+      font-size: 11px;
+    }
+    .menubar-time {
+      color: rgba(255,255,255,0.85);
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.02em;
+      font-variant-numeric: tabular-nums;
+    }
+
+    /* ===== About Dropdown ===== */
+    .about-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 90;
+      display: none;
+    }
+    .about-overlay.visible { display: block; }
+    .about-card {
+      position: fixed;
+      top: 36px;
+      left: 16px;
+      z-index: 95;
+      width: 260px;
+      border-radius: 14px;
+      overflow: hidden;
+      background: rgba(28,28,32,0.97);
+      backdrop-filter: blur(40px);
+      -webkit-backdrop-filter: blur(40px);
+      border: 1px solid rgba(255,255,255,0.12);
+      box-shadow: 0 16px 48px rgba(0,0,0,0.6);
+      padding: 16px;
+      display: none;
+      animation: slideUp 0.25s cubic-bezier(0.34,1.56,0.64,1) forwards;
+    }
+    .about-card.visible { display: block; }
+    .about-header { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+    .about-avatar {
+      width: 48px; height: 48px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #C9A84C, #8B6914);
+      display: flex; align-items: center; justify-content: center;
+      color: #fff; font-weight: 700; font-size: 20px;
+      flex-shrink: 0;
+    }
+    .about-name { color: #fff; font-weight: 600; font-size: 14px; }
+    .about-subtitle { color: rgba(255,255,255,0.45); font-size: 11px; margin-top: 2px; }
+    .about-bio { color: rgba(255,255,255,0.55); font-size: 12px; line-height: 1.6; margin-bottom: 12px; }
+    .about-divider { height: 1px; background: rgba(255,255,255,0.08); margin-bottom: 12px; }
+    .about-link {
+      display: flex; align-items: center; gap: 8px;
+      color: rgba(255,255,255,0.65); font-size: 12px;
+      padding: 6px 8px; border-radius: 8px;
+      text-decoration: none;
+      transition: background 0.15s;
+    }
+    .about-link:hover { background: rgba(255,255,255,0.08); }
+
+    /* ===== Content ===== */
+    .content {
+      position: relative;
+      z-index: 10;
+      display: flex;
+      flex-direction: column;
+      padding-top: 44px;
+      padding-bottom: 110px;
+      min-height: 100vh;
+    }
+
+    /* ===== Profile ===== */
+    .profile {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 32px 24px 24px;
+    }
+    .profile-avatar {
+      width: 80px; height: 80px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #C9A84C, #8B6914);
+      display: flex; align-items: center; justify-content: center;
+      color: #fff; font-weight: 700; font-size: 32px;
+      margin-bottom: 12px;
+      box-shadow: 0 8px 32px rgba(201,168,76,0.35), 0 0 0 3px rgba(201,168,76,0.15);
+      animation: float 4s ease-in-out infinite;
+    }
+    .profile-name {
+      color: #fff;
+      font-weight: 700;
+      font-size: 22px;
+      margin-bottom: 4px;
+      font-family: "Noto Serif SC", serif;
+      text-shadow: 0 2px 8px rgba(0,0,0,0.5);
+    }
+    .profile-title {
+      font-size: 13px;
+      color: rgba(255,255,255,0.5);
+      text-align: center;
+    }
+    .profile-bio {
+      font-size: 12px;
+      color: rgba(255,255,255,0.28);
+      text-align: center;
+      margin-top: 6px;
+      line-height: 1.6;
+      max-width: 280px;
+    }
+
+    /* ===== Apps Grid ===== */
+    .apps-section { padding: 0 24px; }
+    .apps-label {
+      font-size: 11px;
+      font-weight: 500;
+      color: rgba(255,255,255,0.35);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+    .apps-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px 8px;
+    }
+    @media (min-width: 480px) {
+      .apps-grid { grid-template-columns: repeat(5, 1fr); }
+    }
+
+    /* ===== App Icon ===== */
+    .app-icon-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .app-icon-wrap.placeholder { cursor: default; opacity: 0.4; }
+    .app-icon {
+      width: 68px; height: 68px;
+      border-radius: 22.5%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 32px;
+      overflow: hidden;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.12);
+      transition: transform 0.18s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.18s;
+      position: relative;
+    }
+    .app-icon img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      border-radius: inherit;
+    }
+    .app-icon-wrap:not(.placeholder):hover .app-icon {
+      transform: scale(1.12);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.15);
+    }
+    .app-icon-wrap:not(.placeholder):active .app-icon {
+      transform: scale(0.94);
+    }
+    .app-icon-label {
+      font-size: 11px;
+      color: rgba(255,255,255,0.75);
+      text-align: center;
+      max-width: 72px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      text-shadow: 0 1px 3px rgba(0,0,0,0.8);
+    }
+    .app-icon-badge {
+      position: absolute;
+      top: -4px; right: -4px;
+      background: #C9A84C;
+      color: #000;
+      font-size: 9px;
+      font-weight: 700;
+      padding: 1px 5px;
+      border-radius: 8px;
+      letter-spacing: 0.03em;
+    }
+
+    /* ===== Hint ===== */
+    .hint {
+      text-align: center;
+      font-size: 11px;
+      color: rgba(255,255,255,0.18);
+      margin-top: 24px;
+      padding: 0 24px;
+    }
+
+    /* ===== App Card Modal ===== */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 200;
+      background: rgba(0,0,0,0.6);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      display: none;
+      align-items: flex-end;
+      justify-content: center;
+      padding: 0 0 90px;
+      animation: fadeIn 0.2s ease forwards;
+    }
+    .modal-overlay.visible {
+      display: flex;
+    }
+    .modal-card {
+      width: 100%;
+      max-width: 420px;
+      border-radius: 20px 20px 16px 16px;
+      background: rgba(22,22,26,0.97);
+      backdrop-filter: blur(40px) saturate(200%);
+      -webkit-backdrop-filter: blur(40px) saturate(200%);
+      border: 1px solid rgba(255,255,255,0.12);
+      box-shadow: 0 -4px 40px rgba(0,0,0,0.5), 0 20px 60px rgba(0,0,0,0.4);
+      overflow: hidden;
+      animation: slideUp 0.3s cubic-bezier(0.34,1.56,0.64,1) forwards;
+    }
+    .modal-header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 20px 20px 16px;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .modal-icon {
+      width: 56px; height: 56px;
+      border-radius: 22.5%;
+      overflow: hidden;
+      flex-shrink: 0;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.4);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 26px;
+    }
+    .modal-icon img { width: 100%; height: 100%; object-fit: cover; }
+    .modal-title { color: #fff; font-weight: 700; font-size: 18px; }
+    .modal-subtitle { color: rgba(255,255,255,0.45); font-size: 12px; margin-top: 2px; }
+    .modal-close {
+      margin-left: auto;
+      width: 28px; height: 28px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.1);
+      border: none;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      color: rgba(255,255,255,0.6);
+      font-size: 14px;
+      transition: background 0.15s;
+      flex-shrink: 0;
+    }
+    .modal-close:hover { background: rgba(255,255,255,0.18); }
+    .modal-body { padding: 16px 20px 20px; }
+    .modal-desc {
+      color: rgba(255,255,255,0.65);
+      font-size: 13px;
+      line-height: 1.7;
+      margin-bottom: 16px;
+    }
+    .modal-tech {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 20px;
+    }
+    .modal-tech-tag {
+      background: rgba(201,168,76,0.12);
+      border: 1px solid rgba(201,168,76,0.25);
+      color: rgba(201,168,76,0.85);
+      font-size: 11px;
+      padding: 3px 10px;
+      border-radius: 20px;
+      font-weight: 500;
+    }
+    .modal-actions { display: flex; gap: 10px; }
+    .modal-btn {
+      flex: 1;
+      padding: 11px 16px;
+      border-radius: 12px;
+      border: none;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 600;
+      font-family: inherit;
+      transition: all 0.15s;
+      text-decoration: none;
+      text-align: center;
+      display: flex; align-items: center; justify-content: center; gap: 6px;
+    }
+    .modal-btn-primary {
+      background: linear-gradient(135deg, #C9A84C, #8B6914);
+      color: #000;
+    }
+    .modal-btn-primary:hover { opacity: 0.9; transform: translateY(-1px); }
+    .modal-btn-secondary {
+      background: rgba(255,255,255,0.08);
+      color: rgba(255,255,255,0.7);
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+    .modal-btn-secondary:hover { background: rgba(255,255,255,0.12); }
+
+    /* ===== Dock ===== */
+    .dock {
+      position: fixed;
+      bottom: 0; left: 0; right: 0;
+      display: flex;
+      justify-content: center;
+      z-index: 50;
+      padding-bottom: max(16px, env(safe-area-inset-bottom));
+      padding-left: 16px;
+      padding-right: 16px;
+    }
+    .dock-inner {
+      background: rgba(255,255,255,0.12);
+      backdrop-filter: blur(40px) saturate(180%);
+      -webkit-backdrop-filter: blur(40px) saturate(180%);
+      border: 1px solid rgba(255,255,255,0.18);
+      border-radius: 20px;
+      padding: 8px 16px 6px;
+      display: flex;
+      align-items: flex-end;
+      gap: 10px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.15);
+    }
+    .dock-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
+      cursor: pointer;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .dock-icon {
+      width: 52px; height: 52px;
+      border-radius: 22.5%;
+      overflow: hidden;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 24px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.15);
+      transition: transform 0.2s cubic-bezier(0.34,1.56,0.64,1);
+    }
+    .dock-icon img { width: 100%; height: 100%; object-fit: cover; }
+    .dock-item:hover .dock-icon { transform: scale(1.3) translateY(-8px); }
+    .dock-item:active .dock-icon { transform: scale(0.9); }
+    .dock-dot {
+      width: 4px; height: 4px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.7);
+    }
+
+    /* ===== Scrollbar ===== */
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 2px; }
+  </style>
+</head>
+<body>
+  <div class="desktop" id="desktop">
+
+    <!-- Stars -->
+    <div class="stars" id="stars"></div>
+
+    <!-- MenuBar -->
+    <div class="menubar">
+      <div class="menubar-left">
+        <span class="menubar-name" id="menubar-name-btn">Erin_xyal</span>
+        <span class="menubar-title">独立开发者 · 产品设计师</span>
+      </div>
+      <span class="menubar-time" id="time-display"></span>
+    </div>
+
+    <!-- About Dropdown -->
+    <div class="about-overlay" id="about-overlay"></div>
+    <div class="about-card" id="about-card">
+      <div class="about-header">
+        <div class="about-avatar">E</div>
+        <div>
+          <div class="about-name">Erin_xyal</div>
+          <div class="about-subtitle">独立开发者 · 产品设计师</div>
+        </div>
+      </div>
+      <p class="about-bio">热爱将东方哲学与现代技术融合，探索星辰与代码之间的奥秘。</p>
+      <div class="about-divider"></div>
+      <a href="https://github.com/erin-xyal" target="_blank" rel="noopener noreferrer" class="about-link">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/>
+        </svg>
+        GitHub · erin-xyal
+      </a>
+    </div>
+
+    <!-- Content -->
+    <div class="content">
+      <!-- Profile -->
+      <div class="profile">
+        <div class="profile-avatar">E</div>
+        <h1 class="profile-name">Erin_xyal</h1>
+        <p class="profile-title">独立开发者 · 产品设计师</p>
+        <p class="profile-bio">热爱将东方哲学与现代技术融合</p>
+      </div>
+
+      <!-- Apps -->
+      <div class="apps-section">
+        <p class="apps-label">我的应用</p>
+        <div class="apps-grid" id="apps-grid"></div>
+      </div>
+
+      <!-- Hint -->
+      <p class="hint">单击查看详情 · 双击直接打开</p>
+    </div>
+
+    <!-- App Card Modal -->
+    <div class="modal-overlay" id="modal-overlay">
+      <div class="modal-card" id="modal-card">
+        <div class="modal-header">
+          <div class="modal-icon" id="modal-icon"></div>
+          <div>
+            <div class="modal-title" id="modal-title"></div>
+            <div class="modal-subtitle" id="modal-subtitle"></div>
+          </div>
+          <button class="modal-close" id="modal-close">✕</button>
+        </div>
+        <div class="modal-body">
+          <p class="modal-desc" id="modal-desc"></p>
+          <div class="modal-tech" id="modal-tech"></div>
+          <div class="modal-actions" id="modal-actions"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Dock -->
+    <div class="dock">
+      <div class="dock-inner" id="dock-inner"></div>
+    </div>
+
+  </div>
+
+  <script>
+    // ===== Data =====
+    const LOGO_URL = "https://d2xsxph8kpxj0f.cloudfront.net/310519663387119245/3FghjosgcRpkyGKCakFbZX/Logo%E5%92%96%E5%96%B1_110cd039.png";
+    const CURRY_LINK = "https://curryastro.manus.space";
+
+    const apps = [
+      {
+        id: "curry-astro",
+        name: "咖喱占星",
+        subtitle: "吠陀命理分析",
+        description: "基于印度吠陀占星的 AI 命理分析应用。通过精准的 Lahiri Ayanamsa 计算，生成本命 Rasi 星盘、Vimshottari 大运流年，结合 AI 深度解读八大人生领域——事业、财运、感情、子女、运势、学业、寿命健康、性格面相。",
+        techStack: ["React 19", "TypeScript", "tRPC", "Drizzle ORM", "Stripe", "AI"],
+        icon: LOGO_URL,
+        iconBg: "linear-gradient(135deg, #1a1400, #2d2000)",
+        link: CURRY_LINK,
+        githubLink: "https://github.com/erin-xyal/curry-astro",
+        status: "live",
+        badge: "LIVE",
+      },
+      {
+        id: "placeholder-1",
+        name: "即将推出",
+        subtitle: "敬请期待",
+        description: "正在开发中的新项目，敬请期待。",
+        techStack: [],
+        icon: "🔮",
+        iconBg: "linear-gradient(135deg, #1a1a2e, #16213e)",
+        status: "placeholder",
+      },
+      {
+        id: "placeholder-2",
+        name: "即将推出",
+        subtitle: "敬请期待",
+        description: "正在开发中的新项目，敬请期待。",
+        techStack: [],
+        icon: "🌙",
+        iconBg: "linear-gradient(135deg, #0f3460, #533483)",
+        status: "placeholder",
+      },
+      {
+        id: "placeholder-3",
+        name: "即将推出",
+        subtitle: "敬请期待",
+        description: "正在开发中的新项目，敬请期待。",
+        techStack: [],
+        icon: "⭐",
+        iconBg: "linear-gradient(135deg, #533483, #e94560)",
+        status: "placeholder",
+      },
+    ];
+
+    const dockApps = [apps[0]];
+
+    // ===== Stars =====
+    (function() {
+      const container = document.getElementById("stars");
+      for (let i = 0; i < 80; i++) {
+        const star = document.createElement("div");
+        star.className = "star";
+        const x = (i * 137.508) % 100;
+        const y = (i * 97.31) % 100;
+        const size = (i % 3) + 1;
+        const opacity = 0.1 + (i % 7) * 0.1;
+        const dur = 2 + (i % 5);
+        const delay = i % 4;
+        star.style.cssText = `left:${x}%;top:${y}%;width:${size}px;height:${size}px;opacity:${opacity};animation:twinkle ${dur}s ease-in-out ${delay}s infinite;`;
+        container.appendChild(star);
+      }
+    })();
+
+    // ===== Clock =====
+    const DAYS = ["日","一","二","三","四","五","六"];
+    function updateTime() {
+      const now = new Date();
+      const h = String(now.getHours()).padStart(2,"0");
+      const m = String(now.getMinutes()).padStart(2,"0");
+      document.getElementById("time-display").textContent = `${h}:${m} 星期${DAYS[now.getDay()]}`;
+    }
+    updateTime();
+    setInterval(updateTime, 1000);
+
+    // ===== About Menu =====
+    const menubarBtn = document.getElementById("menubar-name-btn");
+    const aboutCard = document.getElementById("about-card");
+    const aboutOverlay = document.getElementById("about-overlay");
+    menubarBtn.addEventListener("click", function(e) {
+      e.stopPropagation();
+      const visible = aboutCard.classList.contains("visible");
+      aboutCard.classList.toggle("visible", !visible);
+      aboutOverlay.classList.toggle("visible", !visible);
+    });
+    aboutOverlay.addEventListener("click", function() {
+      aboutCard.classList.remove("visible");
+      aboutOverlay.classList.remove("visible");
+    });
+
+    // ===== Render Apps =====
+    function renderIcon(app, size) {
+      const div = document.createElement("div");
+      div.className = "app-icon";
+      div.style.background = app.iconBg;
+      div.style.width = size + "px";
+      div.style.height = size + "px";
+      if (app.icon && app.icon.startsWith("http")) {
+        const img = document.createElement("img");
+        img.src = app.icon;
+        img.alt = app.name;
+        img.loading = "lazy";
+        div.appendChild(img);
+      } else {
+        div.textContent = app.icon || "?";
+      }
+      if (app.badge) {
+        const badge = document.createElement("span");
+        badge.className = "app-icon-badge";
+        badge.textContent = app.badge;
+        div.appendChild(badge);
+      }
+      return div;
+    }
+
+    const grid = document.getElementById("apps-grid");
+    apps.forEach(function(app) {
+      const wrap = document.createElement("div");
+      wrap.className = "app-icon-wrap" + (app.status === "placeholder" ? " placeholder" : "");
+      const icon = renderIcon(app, 68);
+      const label = document.createElement("span");
+      label.className = "app-icon-label";
+      label.textContent = app.name;
+      wrap.appendChild(icon);
+      wrap.appendChild(label);
+
+      if (app.status !== "placeholder") {
+        let lastClick = 0;
+        wrap.addEventListener("click", function() {
+          const now = Date.now();
+          if (now - lastClick < 300) {
+            // double click
+            if (app.link) window.open(app.link, "_blank");
+          } else {
+            openModal(app);
+          }
+          lastClick = now;
+        });
+        wrap.addEventListener("dblclick", function(e) {
+          e.preventDefault();
+          if (app.link) window.open(app.link, "_blank");
+        });
+      }
+      grid.appendChild(wrap);
+    });
+
+    // ===== Render Dock =====
+    const dockInner = document.getElementById("dock-inner");
+    dockApps.forEach(function(app) {
+      const item = document.createElement("div");
+      item.className = "dock-item";
+      const icon = document.createElement("div");
+      icon.className = "dock-icon";
+      icon.style.background = app.iconBg;
+      if (app.icon && app.icon.startsWith("http")) {
+        const img = document.createElement("img");
+        img.src = app.icon;
+        img.alt = app.name;
+        icon.appendChild(img);
+      } else {
+        icon.textContent = app.icon || "?";
+      }
+      const dot = document.createElement("div");
+      dot.className = "dock-dot";
+      item.appendChild(icon);
+      item.appendChild(dot);
+
+      let lastClick = 0;
+      item.addEventListener("click", function() {
+        const now = Date.now();
+        if (now - lastClick < 300) {
+          if (app.link) window.open(app.link, "_blank");
+        } else {
+          openModal(app);
+        }
+        lastClick = now;
+      });
+      item.addEventListener("dblclick", function(e) {
+        e.preventDefault();
+        if (app.link) window.open(app.link, "_blank");
+      });
+      dockInner.appendChild(item);
+    });
+
+    // ===== Modal =====
+    function openModal(app) {
+      // icon
+      const iconEl = document.getElementById("modal-icon");
+      iconEl.innerHTML = "";
+      iconEl.style.background = app.iconBg;
+      if (app.icon && app.icon.startsWith("http")) {
+        const img = document.createElement("img");
+        img.src = app.icon;
+        img.alt = app.name;
+        iconEl.appendChild(img);
+      } else {
+        iconEl.textContent = app.icon || "?";
+      }
+      document.getElementById("modal-title").textContent = app.name;
+      document.getElementById("modal-subtitle").textContent = app.subtitle;
+      document.getElementById("modal-desc").textContent = app.description;
+
+      // tech tags
+      const techEl = document.getElementById("modal-tech");
+      techEl.innerHTML = "";
+      (app.techStack || []).forEach(function(t) {
+        const tag = document.createElement("span");
+        tag.className = "modal-tech-tag";
+        tag.textContent = t;
+        techEl.appendChild(tag);
+      });
+
+      // actions
+      const actionsEl = document.getElementById("modal-actions");
+      actionsEl.innerHTML = "";
+      if (app.link) {
+        const btn = document.createElement("a");
+        btn.className = "modal-btn modal-btn-primary";
+        btn.href = app.link;
+        btn.target = "_blank";
+        btn.rel = "noopener noreferrer";
+        btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg> 打开应用';
+        actionsEl.appendChild(btn);
+      }
+      if (app.githubLink) {
+        const btn2 = document.createElement("a");
+        btn2.className = "modal-btn modal-btn-secondary";
+        btn2.href = app.githubLink;
+        btn2.target = "_blank";
+        btn2.rel = "noopener noreferrer";
+        btn2.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/></svg> GitHub';
+        actionsEl.appendChild(btn2);
+      }
+
+      document.getElementById("modal-overlay").classList.add("visible");
+    }
+
+    function closeModal() {
+      document.getElementById("modal-overlay").classList.remove("visible");
+    }
+
+    document.getElementById("modal-close").addEventListener("click", closeModal);
+    document.getElementById("modal-overlay").addEventListener("click", function(e) {
+      if (e.target === this) closeModal();
+    });
+  </script>
+</body>
+</html>
