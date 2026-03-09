@@ -81,6 +81,8 @@
     .icon-folder .icon-visual{background:linear-gradient(145deg,#e8f4fd,#c8e6f8);border-color:rgba(100,180,240,.3);}
     .icon-folder .icon-visual svg{stroke:#3a8fc7;}
     .icon-curry .icon-visual{background:#0d0d0d;}
+    .icon-navi .icon-visual{background:#0f1a2e;}
+    .icon-bounce .icon-visual{background:#fff;border-color:rgba(0,0,0,0.1);}
     .desktop-icon span{font-size:11px;text-align:center;font-weight:500;color:var(--text);letter-spacing:.1px;line-height:1.3;max-width:68px;word-break:break-word;}
 
     /* ── Center Widget ── */
@@ -194,6 +196,9 @@
     .child-ext{font-size:11px;color:var(--light);}
     .folder-toggle{width:14px;height:14px;stroke:var(--light);stroke-width:1.5;fill:none;flex-shrink:0;transition:transform .25s;}
     .folder-item.open .folder-toggle{transform:rotate(90deg);}
+
+    /* ── Web3 site icons ── */
+    .site-icon{width:100%;height:100%;object-fit:contain;border-radius:10px;}
 
     /* ── Bio Panel ── */
     #bio-panel{
@@ -315,16 +320,24 @@
   <div class="icon-grid">
     <div class="desktop-icon icon-curry" id="icon-curry">
       <div class="icon-visual">
-        <img src="https://cdn-manus.manus.space/webdev-assets/Logo%E5%92%96%E5%96%B1.png" alt="Curry Astro"
+        <img src="https://d2xsxph8kpxj0f.cloudfront.net/310519663387119245/3FghjosgcRpkyGKCakFbZX/Logo%E5%92%96%E5%96%B1_83a31638.png" alt="Curry Astro"
           onerror="this.parentElement.innerHTML='<span style=font-size:28px>🐑</span>'" />
       </div>
       <span>Curry Astro</span>
     </div>
-    <div class="desktop-icon icon-folder" id="icon-web3">
+    <div class="desktop-icon icon-navi" id="icon-navi">
       <div class="icon-visual">
-        <svg viewBox="0 0 24 24"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+        <img class="site-icon" src="https://www.google.com/s2/favicons?domain=naviprotocol.io&sz=64" alt="NAVI"
+          onerror="this.parentElement.style.background='#0f1a2e';this.parentElement.innerHTML='<span style=color:#5bb8f5;font-size:14px;font-weight:700>NAVI</span>'" />
       </div>
-      <span>Web3</span>
+      <span>NAVI</span>
+    </div>
+    <div class="desktop-icon icon-bounce" id="icon-bounce">
+      <div class="icon-visual">
+        <img class="site-icon" src="https://www.google.com/s2/favicons?domain=bounce.finance&sz=64" alt="Bounce"
+          onerror="this.parentElement.innerHTML='<span style=font-size:22px>🔄</span>'" />
+      </div>
+      <span>Bounce</span>
     </div>
   </div>
 
@@ -380,7 +393,7 @@
       <!-- Curry Astro -->
       <div class="project-item" onclick="openApp()">
         <div class="project-icon curry">
-          <img src="https://cdn-manus.manus.space/webdev-assets/Logo%E5%92%96%E5%96%B1.png" alt="Curry Astro"
+          <img src="https://d2xsxph8kpxj0f.cloudfront.net/310519663387119245/3FghjosgcRpkyGKCakFbZX/Logo%E5%92%96%E5%96%B1_83a31638.png" alt="Curry Astro"
             onerror="this.parentElement.textContent='🐑'" />
         </div>
         <div class="project-info">
@@ -390,30 +403,30 @@
         <svg class="project-arrow" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
       </div>
 
-      <!-- Web3 Folder -->
-      <div class="project-item folder-item" id="folder-web3-item" onclick="toggleFolder()">
-        <div class="project-icon folder">
-          <svg viewBox="0 0 24 24"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+      <!-- NAVI Protocol -->
+      <div class="project-item" onclick="window.open('https://app.naviprotocol.io/','_blank')">
+        <div class="project-icon" style="background:#0f1a2e;border-radius:9px;overflow:hidden;">
+          <img style="width:28px;height:28px;object-fit:contain;" src="https://www.google.com/s2/favicons?domain=naviprotocol.io&sz=64" alt="NAVI"
+            onerror="this.parentElement.innerHTML='<span style=color:#5bb8f5;font-size:11px;font-weight:700>NAVI</span>'" />
         </div>
         <div class="project-info">
-          <div class="project-name">Web3 Projects</div>
-          <div class="project-desc">DeFi · Protocol · Finance</div>
+          <div class="project-name">NAVI Protocol</div>
+          <div class="project-desc">DeFi Lending · Sui Network</div>
         </div>
-        <svg class="folder-toggle" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+        <svg class="project-arrow" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
       </div>
 
-      <!-- Web3 Children -->
-      <div class="folder-children" id="folder-children">
-        <div class="folder-child" onclick="window.open('https://app.naviprotocol.io/','_blank')">
-          <div class="child-dot" style="background:#3a8fc7;"></div>
-          <span class="child-name">NAVI Protocol</span>
-          <span class="child-ext">↗</span>
+      <!-- Bounce Finance -->
+      <div class="project-item" onclick="window.open('https://bounce.finance/','_blank')">
+        <div class="project-icon" style="background:#fff;border:1px solid rgba(0,0,0,0.08);border-radius:9px;overflow:hidden;">
+          <img style="width:28px;height:28px;object-fit:contain;" src="https://www.google.com/s2/favicons?domain=bounce.finance&sz=64" alt="Bounce"
+            onerror="this.parentElement.innerHTML='<span style=font-size:18px>🔄</span>'" />
         </div>
-        <div class="folder-child" onclick="window.open('https://bounce.finance/','_blank')">
-          <div class="child-dot" style="background:#f59e0b;"></div>
-          <span class="child-name">Bounce Finance</span>
-          <span class="child-ext">↗</span>
+        <div class="project-info">
+          <div class="project-name">Bounce Finance</div>
+          <div class="project-desc">Auction Protocol · Web3</div>
         </div>
+        <svg class="project-arrow" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
       </div>
     </div>
 
@@ -425,7 +438,7 @@
   <div class="app-card">
     <div class="app-card-header">
       <div class="app-card-icon curry-bg">
-        <img src="https://cdn-manus.manus.space/webdev-assets/Logo%E5%92%96%E5%96%B1.png" alt="Curry Astro"
+        <img src="https://d2xsxph8kpxj0f.cloudfront.net/310519663387119245/3FghjosgcRpkyGKCakFbZX/Logo%E5%92%96%E5%96%B1_83a31638.png" alt="Curry Astro"
           onerror="this.parentElement.textContent='🐑'" />
       </div>
       <div class="app-card-meta">
@@ -461,7 +474,7 @@
     <div class="dock-item curry-dock" title="Curry Astro"
       onclick="openApp()"
       ondblclick="window.open('https://curryastro.manus.space','_blank')">
-      <img src="https://cdn-manus.manus.space/webdev-assets/Logo%E5%92%96%E5%96%B1.png" alt="Curry Astro"
+      <img src="https://d2xsxph8kpxj0f.cloudfront.net/310519663387119245/3FghjosgcRpkyGKCakFbZX/Logo%E5%92%96%E5%96%B1_83a31638.png" alt="Curry Astro"
         onerror="this.parentElement.innerHTML='<span style=font-size:22px>🐑</span>'" />
     </div>
     <div class="dock-sep"></div>
@@ -523,13 +536,9 @@
     ic.addEventListener('dblclick',e=>{
       e.stopPropagation();
       if(ic.id==='icon-curry'){openApp();}
-      if(ic.id==='icon-web3'){
-        pillPr.click();
-        setTimeout(()=>{
-          document.getElementById('folder-web3-item').classList.add('open');
-          document.getElementById('folder-children').classList.add('open');
-        },50);
-      }
+      if(ic.id==='icon-navi'){window.open('https://app.naviprotocol.io/','_blank');}
+      if(ic.id==='icon-bounce'){window.open('https://bounce.finance/','_blank');}
+      if(ic.id==='icon-web3'){pillPr.click();}
     });
   });
   document.addEventListener('click',()=>icons.forEach(i=>i.classList.remove('selected')));
